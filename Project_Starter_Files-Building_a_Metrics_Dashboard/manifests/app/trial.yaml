@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trial-app
+  annotations:
+    "sidecar.jaegertracing.io/inject": "true"
 spec:
   replicas: 3
   selector:
@@ -14,8 +16,10 @@ spec:
     spec:
       containers:
       - name: trial
-        # We advise you to build, push and use your own image, instead of using instructor's image.
-        image: ghcr.io/jasonsmithio/trial:v1
+        image: winfriedbreuer/dashboard-trial:v1
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://jaeger-collector.observability.svc.cluster.local:4318"
         ports:
         - containerPort: 8080
 ---
@@ -27,6 +31,6 @@ spec:
   selector:
     app: trial
   ports:
-    - port: 8082
-      targetPort: 8080
+  - port: 8082
+    targetPort: 8080
   type: LoadBalancer

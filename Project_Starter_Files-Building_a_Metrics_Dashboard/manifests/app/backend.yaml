@@ -14,8 +14,11 @@ spec:
     spec:
       containers:
       - name: backend
-        # We advise you to build, push and use your own image, instead of using instructor's image.      
-        image: ghcr.io/jasonsmithio/backend:v1
+        image: winfriedbreuer/dashboard-backend:v1
+        imagePullPolicy: Always
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://jaeger-collector.observability.svc.cluster.local:4318"
         ports:
         - containerPort: 8081
 ---
@@ -27,6 +30,6 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 8081
-      targetPort: 8080
+  - port: 8081
+    targetPort: 8080
   type: LoadBalancer
