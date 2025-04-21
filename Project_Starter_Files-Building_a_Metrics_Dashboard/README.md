@@ -1,20 +1,39 @@
-**Note:** For the screenshots, you can store all of your answer images in the `answer-img` directory.
-
 ## Verify the monitoring installation
 
-*TODO:* run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
+### All Pods in all Namespaces
+![All Pods in all Namespaces](answer-img/deployment-all-pods.png "All Pods in all Namespaces")
+
+### All Services in all Namespaces
+![All Services in all Namespaces](answer-img/deployment-all-svc.png "All Services in all Namespaces")
 
 ## Setup the Jaeger and Prometheus source
-*TODO:* Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
+
+Expose Grafana: 
+`kubectl -n monitoring port-forward svc/prometheus-grafana --address 0.0.0.0 3000:80`
+`Forwarding from 0.0.0.0:3000 -> 3000`
+
+Add Prometheus as Datasource in Grafana:
+`Grafana -> Connections -> Data Sources -> Add new Data Source -> Name: "Prometheus-Datasource" -> Connection - Prometheus Server URL: "http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090" -> Save & test`
+
+### Screenshot of the homepage after Login to Grafana
+![Grafana after login](answer-img/Grafana-Login.png)
 
 ## Create a Basic Dashboard
-*TODO:* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.
+
+![Prometheus-Dashboard in Grafana](answer-img/Grafana-Dashboard-Prometheus.png)
 
 ## Describe SLO/SLI
-*TODO:* Describe, in your own words, what the SLIs are, based on an SLO of *monthly uptime* and *request response time*.
+
+SLO: "At least 99% of uptime per month", SLI: "Uptime was 99.57% in the last month"
+SLO: "Maximum Request response time below 200ms per day", SLI: "Maximum request response time was 147ms yesterday"
 
 ## Creating SLI metrics.
-*TODO:* It is important to know why we want to measure certain metrics for our customer. Describe in detail 5 metrics to measure these SLIs. 
+1. The service will handle at least 1000 requests per hour without performance degradation.
+2. The API will be available 99.9% of the time over the last 30 days
+3. The /healthz endpoint will return a 20x status at least 99.95% of the time during business hours 
+4. 95% of HTTP requests to /api/v1/* will complete within 300ms over the last 24h.
+5. Less than 0.1% of requests will return 5xx status codes over the last 1 hour.
+
 
 ## Create a Dashboard to measure our SLIs
 *TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.
