@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
 
 import pymongo
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info("app_info", "Grafana Prometheus Backend", version="1.0.0")
 
 app.config["MONGO_DBNAME"] = "example-mongodb"
 app.config[

@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: trial
-        image: winfriedbreuer/dashboard-trial:v1
+        image: winfriedbreuer/dashboard-trial:latest
+        imagePullPolicy: Always
         env:
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: "http://jaeger-collector.observability.svc.cluster.local:4318"
