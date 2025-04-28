@@ -36,37 +36,68 @@ SLO: "Maximum Request response time below 200ms per day", SLI: "Maximum request 
 
 
 ## Create a Dashboard to measure our SLIs
-*TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.
+
+Dashboard to measure the uptime of the frontend and backend services and 40x and 50x errors of front- and backend over 24h
+![Prometheus-Dashboard in Grafana displaying SLIs](answer-img/Grafana-Dashboard-SLI.png)
 
 ## Tracing our Flask App
-*TODO:*  We will create a Jaeger span to measure the processes on the backend. Once you fill in the span, provide a screenshot of it here. Also provide a (screenshot) sample Python file containing a trace and span code used to perform Jaeger traces on the backend service.
+Span in Jaeger-UI:
+![Span in Jaeger UI](answer-img/tracing-span-jaegerui.png)
+
+python Tracing code:
+![Tracing in Python](answer-img/python-tracing-code.png)
 
 ## Jaeger in Dashboards
-*TODO:* Now that the trace is running, let's add the metric to our current Grafana dashboard. Once this is completed, provide a screenshot of it here.
+
+Jaeger trace in Grafana Dashboard:
+
+![Jaeger traces in Grafana Dashboard](answer-img/Grafana-Dashboard-Jaeger-traces.png)
 
 ## Report Error
 *TODO:* Using the template below, write a trouble ticket for the developers, to explain the errors that you are seeing (400, 500, latency) and to let them know the file that is causing the issue also include a screenshot of the tracer span to demonstrate how we can user a tracer to locate errors easily.
 
 TROUBLE TICKET
 
-Name:
+Name:   Winfried Breuer
 
-Date:
+Date:   25.04.2025
 
-Subject:
+Subject: Error at Backend route /star
 
-Affected Area:
+Affected Area: Backend
 
-Severity:
+Severity: High
 
-Description:
+Description: Unable to insert new star to Backend service. Backend route /star results in a HTTP-error
 
+Trace:
+![Error in Backend using route /star](answer-img/jaeger-trace-error-400-backend-route-star.png)
 
 ## Creating SLIs and SLOs
-*TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
+
+SLO: 99,95% uptime per month
+
+SLI: 
+1. At least 99.95% of all requests succeed without error  in the last month
+
+2. Less than 0.01% of all requests have returned 5xx errors last month"
+
+3. 99.95% of requests responded within 300ms last month
+
+4. At least 99.95% of connection attempts succeed last month
 
 ## Building KPIs for our plan
-*TODO*: Now that we have our SLIs and SLOs, create a list of 2-3 KPIs to accurately measure these metrics as well as a description of why those KPIs were chosen. We will make a dashboard for this, but first write them down here.
+
+From a users point of view uptime is:
+- No downtime (availability)
+- No errors
+- Fast response (high latency perceived as outage)
+
 
 ## Final Dashboard
-*TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
+![Grafana Uptime Dashboard](answer-img/Grafana-uptime-dashboard.png)
+
+contains:
+- availabilty rate
+- error rate
+- Latency under 500ms
