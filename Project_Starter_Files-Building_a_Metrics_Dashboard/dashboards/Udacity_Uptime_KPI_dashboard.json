@@ -1,0 +1,109 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SLIs - Uptime SLO 99.95%",
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "stat",
+        "title": "Availability Rate",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{status=~\"2..|3..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "yellow", "value": 99.5 },
+                { "color": "green", "value": 99.95 }
+              ]
+            }
+          }
+        },
+        "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 }
+      },
+      {
+        "type": "stat",
+        "title": "5xx Error Rate",
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "yellow", "value": 0.01 },
+                { "color": "red", "value": 0.05 }
+              ]
+            }
+          }
+        },
+        "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 }
+      },
+      {
+        "type": "stat",
+        "title": "Latency Under 300ms",
+        "targets": [
+          {
+            "expr": "sum(rate(http_request_duration_seconds_bucket{le=\"0.3\"}[5m])) / sum(rate(http_request_duration_seconds_count[5m]))",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "yellow", "value": 99.5 },
+                { "color": "green", "value": 99.95 }
+              ]
+            }
+          }
+        },
+        "gridPos": { "h": 6, "w": 6, "x": 0, "y": 6 }
+      },
+      {
+        "type": "stat",
+        "title": "Connection Success Rate",
+        "targets": [
+          {
+            "expr": "avg_over_time(probe_success{job=\"tcp_check\"}[5m])",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "yellow", "value": 99.5 },
+                { "color": "green", "value": 99.95 }
+              ]
+            }
+          }
+        },
+        "gridPos": { "h": 6, "w": 6, "x": 6, "y": 6 }
+      }
+    ],
+    "schemaVersion": 36,
+    "version": 1,
+    "refresh": "5s"
+  },
+  "overwrite": true
+}
